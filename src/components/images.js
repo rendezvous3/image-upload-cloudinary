@@ -59,11 +59,20 @@ class Images extends Component {
       this.setState({
         images: updatedImages
       })
-
-
     })
 
+  }
 
+  removeImage(event){
+    event.preventDefault()
+    console.log('removing image', event.target.id)
+
+    let updatedImages = Object.assign([], this.state.images)
+    updatedImages.splice(event.target.id, 1)
+
+    this.setState({
+      images: updatedImages
+    })
   }
   render(){
 
@@ -71,6 +80,8 @@ class Images extends Component {
       return (
         <li key={i}>
           <img style={{ width: 55 + 'px' }}  src={image.secure_url} />
+          <br />
+          <a id={i} onClick={this.removeImage.bind(this)} href="#">remove</a>
         </li>
       )
     })

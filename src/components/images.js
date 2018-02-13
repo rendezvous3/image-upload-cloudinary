@@ -6,6 +6,15 @@ import superagent from 'superagent'
 
 // https://cloudinary.com/documentation/react_integration#getting_started_guide
 class Images extends Component {
+
+  constructor(){
+    super()
+    this.state = {
+      images: []
+    }
+  }
+
+
   uploadFile(files){
     console.log('uploading file: ')
     const image = files[0]
@@ -41,15 +50,38 @@ class Images extends Component {
       }
 
       console.log('UPLOAD COMPLETE:', JSON.stringify(resp.body))
+
+      const uploaded = resp.body
+
+      let updatedImages = Object.assign([], this.state.images)
+      updatedImages.push(uploaded)
+
+      this.setState({
+        images: updatedImages
+      })
+
+
     })
 
 
   }
   render(){
+
+    const list = this.state.images.map((image, i) => {
+      return (
+        <li key={i}>
+          <img style={{ width: 55 + 'px' }}  src={image.secure_url} />
+        </li>
+      )
+    })
+
     return(
       <div>
         Images Component
         <Dropzone onDrop={this.uploadFile.bind(this)} />
+        <ul>
+          { list }
+        </ul>
       </div>
     )
   }
